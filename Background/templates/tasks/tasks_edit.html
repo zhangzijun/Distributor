@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task</title>
+</head>
+<body>
+<h1>Edit Task</h1>
+<form action="/tasks/edit/{{.task.ID}}" method="POST">
+    <input type="hidden" name="id" value="{{.task.ID}}">
+    <label>Task Number:</label>
+    <input type="text" name="task_number" value="{{.task.TaskNumber}}" required><br>
+    <label>UID:</label>
+    <input type="text" name="uid" value="{{.task.UID}}" required><br>
+    <label>UID Key:</label>
+    <input type="text" name="uid_key" value="{{.task.UIDKey}}" required><br>
+    <label>Task Status:</label>
+    <input type="number" name="task_status" value="{{.task.TaskStatus}}" required><br>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>

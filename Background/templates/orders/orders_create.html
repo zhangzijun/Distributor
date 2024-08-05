@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Order</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h1>新增订单</h1>
+<form action="/orders/create" method="post">
+    <label>手机品牌:</label>
+    <input type="text" name="mobile_brand" required>
+    <label>客户端Mac地址:</label>
+    <input type="text" name="mac_addr" required>
+    <label>秘钥总量:</label>
+    <input type="number" name="total_keys" required>
+    <label>秘钥剩余量:</label>
+    <input type="number" name="remaining_keys" required>
+    <label>烧录成功量:</label>
+    <input type="number" name="successful_keys" required>
+    <button type="submit">新增</button>
+</form>
+<a href="/orders">返回订单列表</a>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Order</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h1>编辑订单</h1>
+<form action="/orders/edit/{{.order.ID}}" method="post">
+    <label>手机品牌:</label>
+    <input type="text" name="mobile_brand" value="{{.order.MobileBrand}}" required>
+    <label>客户端Mac地址:</label>
+    <input type="text" name="mac_addr" value="{{.order.MacAddr}}" required>
+    <label>秘钥总量:</label>
+    <input type="number" name="total_keys" value="{{.order.TotalKeys}}" required>
+    <label>秘钥剩余量:</label>
+    <input type="number" name="remaining_keys" value="{{.order.RemainingKeys}}" required>
+    <label>烧录成功数:</label>
+    <input type="number" name="successful_keys" value="{{.order.SuccessfulKeys}}" required>
+    <button type="submit">更新</button>
+</form>
+<a href="/orders">返回订单列表</a>
+</body>
+</html>

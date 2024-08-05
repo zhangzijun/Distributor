@@ -8,7 +8,7 @@
 Windows 下，linux 里一样的流程，只是安装和编译稍有不同
 1. 下安装 golang1.22.0，参见 https://www.runoob.com/go/go-environment.html
 2. 然后进入项目目录 `cd Distributor`
-3. 执行 go.exe build -o distributor.exe .\Api\Distributor.go ，即可生成 可执行文件 `distributor.exe`
+3. 执行 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc CGO_ENABLED=1 go build -o Distaribute.exe Api/Distributor.go ，即可生成 可执行文件 `distributor.exe`
 4. 执行 `.\distributor.exe`
 5. 浏览器访问 http://localhost:8123/get_token 有正常返回，表示ok
 
@@ -93,3 +93,74 @@ public static Response DecryptResponse(byte[] cipherText, byte[] key)
 ```json
 {"limit":1000,"salt":"afdscdss23"}
 ```
+
+## 签名证书制作
+**生成私钥（Key）：**首先，你需要生成一个私钥文件。使用以下命令：
+bash
+Copy code
+openssl genrsa -out server.key 2048
+这会生成一个名为 server.key 的私钥文件。
+
+**生成证书签名请求（CSR）：**接下来，你需要生成一个证书签名请求文件（CSR），用于向证书颁发机构（CA）请求签名证书。在这种情况下，我们将自己签名，所以我们将使用相同的私钥来生成 CSR。使用以下命令：
+bash
+Copy code
+openssl req -new -key server.key -out server.csr
+这会生成一个名为 server.csr 的 CSR 文件。
+
+**生成自签名证书（CRT）：**使用私钥和 CSR 来生成自签名证书。使用以下命令：
+bash
+Copy code
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+这会生成一个名为 server.crt 的自签名证书。
+
+完成这些步骤后，你就可以将生成的证书和私钥文件用于你的 Go 服务器了
+
+### 客户端c# 示例代码
+```c#
+using System;
+using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+
+namespace CustomCertificateClient
+{
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            // 创建 HttpClient
+            HttpClientHandler handler = new HttpClientHandler();
+            
+            // 加载自定义签名证书
+            X509Certificate2 cert = new X509Certificate2("client.pfx", "password"); // 你的客户端证书路径和密码
+            handler.ClientCertificates.Add(cert);
+
+            // 创建 HttpClient
+            HttpClient client = new HttpClient(handler);
+
+            // 设置服务器地址
+            string url = "https://your_server_address/get_data"; // 替换为你的服务器地址
+
+            try
+            {
+                // 发起 GET 请求
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                // 读取响应
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                // 输出响应
+                Console.WriteLine("Response:");
+                Console.WriteLine(responseBody);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
+    }
+}
+
+```
+

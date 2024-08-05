@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>烧录记录列表</title>
+</head>
+<body>
+<h1>烧录记录</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>烧录编号</th>
+        <th>UID</th>
+        <th>UID Key</th>
+        <th>烧录状态</th>
+        <th>初始化时间</th>
+        <th>更新时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .tasks}}
+    <tr>
+        <td>{{.ID}}</td>
+        <td>{{.TaskNumber}}</td>
+        <td>{{.UID}}</td>
+        <td>{{.UIDKey}}</td>
+        <td>{{.TaskStatus}}</td>
+        <td>{{.FormattedCreationTime}}</td>
+        <td>{{.FormattedUpdateTime}}</td>
+
+    </tr>
+    {{end}}
+    </tbody>
+</table>
+<div>
+    <a href="/tasks?page={{sub .page 1}}&limit={{.limit}}">Previous</a>
+    <a href="/tasks?page={{add .page 1}}&limit={{.limit}}">Next</a>
+</div>
+
+</body>
+</html>

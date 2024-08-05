@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order List</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h1>Order List</h1>
+<a href="/orders/create">新增订单</a>
+<table border="1">
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>手机品牌</th>
+        <th>客户端Mac地址</th>
+        <th>秘钥订单创建时间</th>
+        <th>秘钥总数</th>
+        <th>秘钥剩余量</th>
+        <th>成功烧录数</th>
+        <th>订单更新时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .orders}}
+    <tr>
+        <td>{{.ID}}</td>
+        <td>{{.MobileBrand}}</td>
+        <td>{{.MacAddr}}</td>
+        <td>{{.FormattedGenerationTime}}</td>
+        <td>{{.TotalKeys}}</td>
+        <td>{{.RemainingKeys}}</td>
+        <td>{{.SuccessfulKeys}}</td>
+        <td>{{.FormattedUpdateTime}}</td>
+        <td>
+            <a href="/orders/edit/{{.ID}}">编辑</a>
+            <form action="/orders/delete/{{.ID}}" method="post" style="display:inline;">
+                <button type="submit">删除</button>
+            </form>
+        </td>
+    </tr>
+    {{end}}
+    </tbody>
+</table>
+<div>
+    <a href="/orders?page={{sub .page 1}}&limit={{.limit}}">上一页</a>
+    <a href="/orders?page={{add .page 1}}&limit={{.limit}}">下一页</a>
+</div>
+</body>
+</html>
